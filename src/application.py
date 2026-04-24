@@ -103,7 +103,7 @@ class Application:
             # 插件会自动按 priority 排序：
             # AudioPlugin(10) -> McpPlugin(20) -> WakeWordPlugin(30) -> CalendarPlugin(40)
             # -> IoTPlugin(50) -> UIPlugin(60) -> ShortcutsPlugin(70)
-            self.plugins.register(
+            plugins_to_register = [
                 McpPlugin(),
                 IoTPlugin(),
                 AudioPlugin(),
@@ -111,7 +111,12 @@ class Application:
                 CalendarPlugin(),
                 UIPlugin(mode=mode),
                 ShortcutsPlugin(),
-            )
+            ]
+            if mode == "cli":
+                from src.plugins.http_api import HttpApiPlugin
+
+                plugins_to_register.append(HttpApiPlugin())
+            self.plugins.register(*plugins_to_register)
             await self.plugins.setup_all(self)
             # 启动后广播初始状态，确保 UI 就绪时能看到“待命”
             try:

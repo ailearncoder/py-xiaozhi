@@ -65,6 +65,10 @@ class ConfigManager:
             "FILTER_LENGTH_RATIO": 0.4,
             "ENABLE_PREPROCESS": True,
         },
+        "HTTP_API_OPTIONS": {
+            "HOST": "0.0.0.0",
+            "PORT": 8000,
+        },
         "AUDIO_DEVICES": {
             "input_device_id": None,
             "input_device_name": None,
