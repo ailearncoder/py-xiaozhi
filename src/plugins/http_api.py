@@ -247,10 +247,14 @@ class HttpApiPlugin(Plugin):
         msg_type = message.get("type")
         if msg_type in ("tts", "stt"):
             text = message.get("text", "")
+            state = message.get("state", "")
             if text:
                 role = "assistant" if msg_type == "tts" else "user"
                 self._current_chat_message = text
-                self._broadcast_sse("text_updated", {"role": role, "text": text})
+                event_data = {"role": role, "text": text}
+                if state:
+                    event_data["state"] = state
+                self._broadcast_sse("text_updated", event_data)
         elif msg_type == "llm":
             emotion = message.get("emotion")
             if emotion:
